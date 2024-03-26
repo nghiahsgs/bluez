@@ -3,11 +3,11 @@ import { Form, Input, Button, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Controller, useForm } from "react-hook-form";
 import { ILogin } from "@/types/authenticate";
-import { FormHelperText } from "@/components/modal-waiting-order";
 import useAuthentication from "@/hooks/useAuthentication";
 import { useRouter } from "next/router";
 import { LocalStorageService } from "@/utils/storage";
 import { ROUTES } from "@/constants/route";
+import styled from "styled-components";
 
 function Login() {
   const { control, handleSubmit } = useForm<ILogin>();
@@ -103,3 +103,9 @@ export default Login;
 Login.getLayout = function getLayout() {
   return <Login />;
 };
+
+export const FormHelperText = styled.div<{ error?: string }>`
+  display: ${({ error }) => (error ? "block" : "none")};
+  color: #ff0000;
+  font-size: 11px;
+`;

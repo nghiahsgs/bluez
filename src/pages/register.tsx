@@ -3,13 +3,13 @@ import { Form, Input, Button, Typography, SelectProps, Select } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Controller, useForm } from "react-hook-form";
 import { IRegister } from "@/types/authenticate";
-import { FormHelperText } from "@/components/modal-waiting-order";
 import useAuthentication from "@/hooks/useAuthentication";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/constants/route";
 import useGetMaster from "@/hooks/useGetMaster";
 import { useSetRecoilState } from "recoil";
 import masterDataState from "@/stores/masterData";
+import { FormHelperText } from "./login";
 
 function Register() {
   const { data } = useGetMaster();
