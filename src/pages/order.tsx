@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Form,
   Input,
@@ -14,23 +14,6 @@ import useGetOrder from "@/hooks/useGetOrders";
 import { useRecoilValue } from "recoil";
 import masterDataState from "@/stores/masterData";
 
-const originData: OrderItem[] = [];
-for (let i = 0; i < 10; i++) {
-  originData.push({
-    id: `id-${i.toString()}`,
-    order_id: `order-id-${i.toString()}`,
-    platform: "platform",
-    shop_name: `shop-name-${i.toString()}`,
-    sku: `sku-${i.toString()}`,
-    base_cost: "100",
-    original_driver_link: `driver-link-${i.toString()}`,
-    designer_name: `designer-name-${i.toString()}`,
-    designer_link: `designer-link-${i.toString()}`,
-    raw_data: "data",
-    supply_company: "company",
-    payment_gateway: "gateway",
-  });
-}
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
@@ -87,10 +70,14 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 const Order: React.FC = () => {
   const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
-  const [editingKey, setEditingKey] = useState("");
   const { data: orderData } = useGetOrder();
+  const [data, setData] = useState(orderData || []);
+  const [editingKey, setEditingKey] = useState("");
   const masterData = useRecoilValue(masterDataState);
+
+  useEffect(() => {
+    if (orderData) setData(orderData);
+  }, [orderData]);
 
   const platformOptions: SelectProps["options"] = useMemo(() => {
     const array = masterData?.shop_platform
@@ -128,7 +115,7 @@ const Order: React.FC = () => {
     form.setFieldsValue({
       base_code: "",
       designer_id: "",
-      designer_link: "",
+      designer_links: "",
       raw_data: "",
       ...record,
     });
@@ -145,8 +132,6 @@ const Order: React.FC = () => {
 
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.id);
-
-      console.log({ newData: row });
 
       if (index > -1) {
         const item = newData[index];
@@ -200,7 +185,7 @@ const Order: React.FC = () => {
     },
     {
       title: "Designer link",
-      dataIndex: "designer_link",
+      dataIndex: "designer_links",
       editable: true,
     },
     {
