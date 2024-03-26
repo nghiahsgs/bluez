@@ -16,3 +16,18 @@ export interface IOrder {
   order_type: EOrderType;
   volume: number;
 }
+
+export interface OrderItem {
+  id: string;
+  order_id: string;
+  platform: string;
+  shop_id: string;
+  sku: string;
+  base_cost: string;
+  original_driver_link: string;
+  designer_id: string;
+  designer_link: string;
+  raw_data: string;
+  supply_company: string;
+  payment_gateway: string;
+}

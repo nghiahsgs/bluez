@@ -15,10 +15,10 @@ const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const route = useRouter();
   const pathName = route.pathname.replace("/", "");
 
-  const [selected, setSelected] = useState<[EMenu]>([EMenu.WAITING_ORDER]);
+  const [selected, setSelected] = useState<[EMenu]>([EMenu.ORDER]);
 
   useEffect(() => {
-    if (pathName !== "waiting-order") {
+    if (pathName !== "order") {
       handleNavigateWhenMount(pathName);
     }
   }, []);
@@ -26,17 +26,17 @@ const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const handleNavigateWhenMount = (path?: string) => {
     let pathToEnum: EMenu;
     switch (path) {
-      case "history-order":
-        pathToEnum = EMenu.HISTORY_ORDER;
-        break;
-      case "balance":
-        pathToEnum = EMenu.BALANCE;
-        break;
-      case "settings":
-        pathToEnum = EMenu.SETTINGS;
-        break;
+      // case "history-order":
+      //   pathToEnum = EMenu.HISTORY_ORDER;
+      //   break;
+      // case "balance":
+      //   pathToEnum = EMenu.BALANCE;
+      //   break;
+      // case "settings":
+      //   pathToEnum = EMenu.SETTINGS;
+      //   break;
       default:
-        pathToEnum = EMenu.WAITING_ORDER;
+        pathToEnum = EMenu.ORDER;
     }
     setSelected([pathToEnum]);
   };
@@ -94,7 +94,7 @@ const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Bot trade ©{new Date().getFullYear()} Created by Nate&Andie
+          ©{new Date().getFullYear()} Created by Bluez
         </Footer>
       </Layout>
     </Layout>

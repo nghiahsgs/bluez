@@ -6,6 +6,8 @@ import axios, { AxiosError } from "axios";
 import Router from "next/router";
 import { setRecoil } from "recoil-nexus";
 
+const publishApi: Array<string> = [API_URL.LOGIN, API_URL.REGISTER];
+
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 
 const createAxiosInstance = () => {
@@ -16,13 +18,12 @@ const createAxiosInstance = () => {
 
   instance.interceptors.request.use(
     (config) => {
-      const url = config.url;
-      const publishApi: Array<string> = [API_URL.LOGIN, API_URL.REGISTER];
-      if (url && publishApi.includes(url)) {
-        return config;
-      }
-      const accessToken = LocalStorageService.getAccessToken();
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      // const url = config.url;
+      // if (url && publishApi.includes(url)) {
+      //   return config;
+      // }
+      // const accessToken = LocalStorageService.getAccessToken();
+      // config.headers.Authorization = `Bearer ${accessToken}`;
       return config;
     },
     (error) => {
