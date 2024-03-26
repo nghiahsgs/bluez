@@ -18,12 +18,12 @@ const createAxiosInstance = () => {
 
   instance.interceptors.request.use(
     (config) => {
-      // const url = config.url;
-      // if (url && publishApi.includes(url)) {
-      //   return config;
-      // }
-      // const accessToken = LocalStorageService.getAccessToken();
-      // config.headers.Authorization = `Bearer ${accessToken}`;
+      const url = config.url;
+      if (url && publishApi.includes(url)) {
+        return config;
+      }
+      const accessToken = LocalStorageService.getAccessToken();
+      config.headers.Authorization = `Bearer ${accessToken}`;
       return config;
     },
     (error) => {

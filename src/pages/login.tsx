@@ -17,8 +17,9 @@ function Login() {
   const onSubmit = (data: ILogin) => {
     login.mutate(data, {
       onSuccess: (data) => {
-        route.push(ROUTES.WAITING_ORDER);
-        LocalStorageService.setAccessToken(data);
+        console.log({ LocalStorageService: data });
+        LocalStorageService.setAccessToken(data.access_token);
+        route.push(ROUTES.ORDER);
       },
     });
   };

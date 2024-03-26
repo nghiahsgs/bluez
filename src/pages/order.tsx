@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Form,
   Input,
@@ -10,51 +10,9 @@ import {
   Select,
 } from "antd";
 import { OrderItem } from "@/types/order";
-
-const PlatformOption: SelectProps["options"] = [
-  {
-    label: "Platform1",
-    value: "Platform1",
-  },
-  {
-    label: "Platform2",
-    value: "Platform2",
-  },
-  {
-    label: "Platform3",
-    value: "Platform3",
-  },
-];
-
-const SupplyCompanyOption: SelectProps["options"] = [
-  {
-    label: "SupplyCompany1",
-    value: "SupplyCompany1",
-  },
-  {
-    label: "SupplyCompany2",
-    value: "SupplyCompany2",
-  },
-  {
-    label: "SupplyCompany3",
-    value: "SupplyCompany3",
-  },
-];
-
-const PaymentOption: SelectProps["options"] = [
-  {
-    label: "Payment1",
-    value: "Payment1",
-  },
-  {
-    label: "Payment2",
-    value: "Payment2",
-  },
-  {
-    label: "Payment3",
-    value: "Payment3",
-  },
-];
+import useGetOrder from "@/hooks/useGetOrders";
+import { useRecoilValue } from "recoil";
+import masterDataState from "@/stores/masterData";
 
 const originData: OrderItem[] = [];
 for (let i = 0; i < 10; i++) {
@@ -62,11 +20,11 @@ for (let i = 0; i < 10; i++) {
     id: `id-${i.toString()}`,
     order_id: `order-id-${i.toString()}`,
     platform: "platform",
-    shop_id: `shop-id-${i.toString()}`,
+    shop_name: `shop-name-${i.toString()}`,
     sku: `sku-${i.toString()}`,
     base_cost: "100",
     original_driver_link: `driver-link-${i.toString()}`,
-    designer_id: `designer-id-${i.toString()}`,
+    designer_name: `designer-name-${i.toString()}`,
     designer_link: `designer-link-${i.toString()}`,
     raw_data: "data",
     supply_company: "company",
@@ -131,6 +89,38 @@ const Order: React.FC = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
+  const { data: orderData } = useGetOrder();
+  const masterData = useRecoilValue(masterDataState);
+
+  const platformOptions: SelectProps["options"] = useMemo(() => {
+    const array = masterData?.shop_platform
+      ? masterData?.shop_platform.map((item) => ({
+          label: item,
+          value: item,
+        }))
+      : [];
+    return array;
+  }, [masterData]);
+
+  const supplyCompanyOptions: SelectProps["options"] = useMemo(() => {
+    const array = masterData?.supply_company
+      ? masterData?.supply_company.map((item) => ({
+          label: item,
+          value: item,
+        }))
+      : [];
+    return array;
+  }, [masterData]);
+
+  const paymentOptions: SelectProps["options"] = useMemo(() => {
+    const array = masterData?.payment_gateway
+      ? masterData?.payment_gateway.map((item) => ({
+          label: item,
+          value: item,
+        }))
+      : [];
+    return array;
+  }, [masterData]);
 
   const isEditing = (record: OrderItem) => record.id === editingKey;
 
@@ -187,8 +177,8 @@ const Order: React.FC = () => {
       editable: true,
     },
     {
-      title: "Shop ID",
-      dataIndex: "shop_id",
+      title: "Shop name",
+      dataIndex: "shop_name",
     },
     {
       title: "Sku",
@@ -204,8 +194,8 @@ const Order: React.FC = () => {
       dataIndex: "original_driver_link",
     },
     {
-      title: "Designer ID",
-      dataIndex: "designer_id",
+      title: "Designer Name",
+      dataIndex: "designer_name",
       editable: true,
     },
     {
@@ -288,9 +278,9 @@ const Order: React.FC = () => {
   };
 
   const getOptionData = (key: string) => {
-    if (key === "platform") return PlatformOption;
-    if (key === "supply_company") return SupplyCompanyOption;
-    if (key === "payment_gateway") return PaymentOption;
+    if (key === "platform") return platformOptions;
+    if (key === "supply_company") return supplyCompanyOptions;
+    if (key === "payment_gateway") return paymentOptions;
     return undefined;
   };
 

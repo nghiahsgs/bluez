@@ -1,13 +1,21 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
-import { Button, Layout, Menu, theme } from "antd";
+import { Button, Layout, Menu, Typography, theme } from "antd";
 import { EMenu, items } from "./Menu";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/constants/route";
 import { LocalStorageService } from "@/utils/storage";
+import useGetMaster from "@/hooks/useGetMaster";
+import { useSetRecoilState } from "recoil";
+import masterDataState from "@/stores/masterData";
+import useGetUserInfo from "@/hooks/useGetUserInfo";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
+  const { data } = useGetMaster();
+  const { data: user } = useGetUserInfo();
+  const setMasterData = useSetRecoilState(masterDataState);
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -22,6 +30,12 @@ const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
       handleNavigateWhenMount(pathName);
     }
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      setMasterData(data);
+    }
+  }, [data, setMasterData]);
 
   const handleNavigateWhenMount = (path?: string) => {
     let pathToEnum: EMenu;
@@ -74,8 +88,11 @@ const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
             background: colorBgContainer,
             display: "flex",
             justifyContent: "flex-end",
+            alignItems: "center",
+            gap: "10px",
           }}
         >
+          <Typography.Text strong>{user?.username || ""}</Typography.Text>
           <Button type="primary" onClick={handleLogout}>
             Logout
           </Button>

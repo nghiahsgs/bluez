@@ -5,7 +5,7 @@ import { useSetRecoilState } from "recoil";
 
 function useGetWaitingOrder() {
   const setLoadingState = useSetRecoilState(loadingState);
-  const waitingOrders = useQuery("waiting-order", getWaitingOrder, {
+  const waitingOrders = useQuery("order", getWaitingOrder, {
     onSuccess: () => {
       setLoadingState(false);
     },

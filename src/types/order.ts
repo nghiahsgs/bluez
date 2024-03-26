@@ -21,11 +21,11 @@ export interface OrderItem {
   id: string;
   order_id: string;
   platform: string;
-  shop_id: string;
+  shop_name: string;
   sku: string;
   base_cost: string;
   original_driver_link: string;
-  designer_id: string;
+  designer_name: string;
   designer_link: string;
   raw_data: string;
   supply_company: string;
