@@ -72,7 +72,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 const Order: React.FC = () => {
   const [form] = Form.useForm();
-  const { data: orderData, loading } = useGetOrder();
+  const { data: orderData, isLoading } = useGetOrder();
   const [data, setData] = useState(orderData || []);
   const [editingKey, setEditingKey] = useState("");
   const masterData = useRecoilValue(masterDataState);
@@ -333,7 +333,7 @@ const Order: React.FC = () => {
   return (
     <Form form={form} component={false}>
       <Table
-        loading={loading}
+        loading={isLoading}
         components={{
           body: {
             cell: EditableCell,
