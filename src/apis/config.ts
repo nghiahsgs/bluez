@@ -40,7 +40,7 @@ const createAxiosInstance = () => {
         errorResponse.status === 401
       ) {
         LocalStorageService.deleteAccessToken();
-        Router.push(ROUTES.LOGIN);
+        // Router.push(ROUTES.LOGIN);
         return;
       }
       return Promise.reject(error?.response || error);
