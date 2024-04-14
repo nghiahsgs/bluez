@@ -105,6 +105,7 @@ const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
               minHeight: "calc(100vh - 178px)",
+              overflow: "auto",
             }}
           >
             {children}
